@@ -1,4 +1,5 @@
 <?php
+
 namespace Axelero\FixedWidth;
 
 use RuntimeException;
@@ -11,8 +12,8 @@ class FixedWidthTest extends \PHPUnit_Framework_TestCase
 
         $config = [
             'first_name' => [],
-            'start' => 1,
-            'end' => 10
+            'start'      => 1,
+            'end'        => 10,
         ];
         $obj = new FixedWidth($config);
     }
@@ -23,10 +24,10 @@ class FixedWidthTest extends \PHPUnit_Framework_TestCase
 
         $config = [
             'first_name' => [
-                'type' => 'xxxxx',
+                'type'  => 'xxxxx',
                 'start' => 1,
-                'end' => 10
-            ]
+                'end'   => 10,
+            ],
         ];
         $obj = new FixedWidth($config);
     }
@@ -37,11 +38,11 @@ class FixedWidthTest extends \PHPUnit_Framework_TestCase
 
         $config = [
             'first_name' => [
-                'type' => 'string',
-                'start' => 1,
-                'end' => 10,
-                'padding' => ''
-            ]
+                'type'    => 'string',
+                'start'   => 1,
+                'end'     => 10,
+                'padding' => '',
+            ],
         ];
         $obj = new FixedWidth($config);
     }
@@ -50,15 +51,15 @@ class FixedWidthTest extends \PHPUnit_Framework_TestCase
     {
         $config = [
             'first_name' => [
-                'type' => 'string',
+                'type'  => 'string',
                 'start' => 1,
-                'end' => 10
+                'end'   => 10,
             ],
             'last_name' => [
-                'type' => 'string',
+                'type'  => 'string',
                 'start' => 11,
-                'end' => 20
-            ]
+                'end'   => 20,
+            ],
         ];
         $obj = new FixedWidth($config);
         $this->assertSame(count($config), count($obj->fields()));
@@ -70,11 +71,11 @@ class FixedWidthTest extends \PHPUnit_Framework_TestCase
 
         $config = [
             'first_name' => [
-                'type' => 'string',
-                'start' => 1,
+                'type'   => 'string',
+                'start'  => 1,
                 'length' => 3,
-                'end' => 9
-            ]
+                'end'    => 9,
+            ],
         ];
         $obj = new FixedWidth($config);
     }
@@ -85,11 +86,11 @@ class FixedWidthTest extends \PHPUnit_Framework_TestCase
 
         $config = [
             'first_name' => [
-                'type' => 'string',
+                'type'      => 'string',
                 'alignment' => 'xxxx',
-                'start' => 1,
-                'end' => 9
-            ]
+                'start'     => 1,
+                'end'       => 9,
+            ],
         ];
         $obj = new FixedWidth($config);
     }
@@ -99,10 +100,10 @@ class FixedWidthTest extends \PHPUnit_Framework_TestCase
         foreach (['string', 'integer'] as $type) {
             $config = [
                 'xxx' => [
-                    'type' => $type,
+                    'type'  => $type,
                     'start' => 1,
-                    'end' => 10
-                ]
+                    'end'   => 10,
+                ],
             ];
             $obj = new FixedWidth($config);
             $this->assertArrayHasKey('alignment', $obj->fields()['xxx']);
@@ -112,11 +113,11 @@ class FixedWidthTest extends \PHPUnit_Framework_TestCase
             // test padding does not get overwritten
             $config = [
                 'xxx' => [
-                    'type' => $type,
-                    'start' => 1,
-                    'end' => 10,
-                    'padding' => '.'
-                ]
+                    'type'    => $type,
+                    'start'   => 1,
+                    'end'     => 10,
+                    'padding' => '.',
+                ],
             ];
             $obj = new FixedWidth($config);
             $this->assertSame('.', $obj->fields()['xxx']['padding']);
@@ -129,10 +130,10 @@ class FixedWidthTest extends \PHPUnit_Framework_TestCase
 
         $config = [
             'first_name' => [
-                'type' => 'string',
+                'type'  => 'string',
                 'start' => 10,
-                'end' => 5
-            ]
+                'end'   => 5,
+            ],
         ];
         $obj = new FixedWidth($config);
     }
@@ -141,11 +142,11 @@ class FixedWidthTest extends \PHPUnit_Framework_TestCase
     {
         $config = [
             'xxx' => [
-                'type' => 'string',
-                'start' => 3,
+                'type'   => 'string',
+                'start'  => 3,
                 'length' => 4,
-                'end' => 6
-            ]
+                'end'    => 6,
+            ],
         ];
         $obj = new FixedWidth($config);
         $this->assertSame($obj->fields()['xxx']['start'], 3);
@@ -154,40 +155,39 @@ class FixedWidthTest extends \PHPUnit_Framework_TestCase
 
         $config = [
             'xxx' => [
-                'type' => 'string',
+                'type'  => 'string',
                 'start' => 3,
-                'end' => 6
-            ]
+                'end'   => 6,
+            ],
         ];
         $obj = new FixedWidth($config);
         $this->assertSame($obj->fields()['xxx']['start'], 3);
         $this->assertSame($obj->fields()['xxx']['length'], 4);
         $this->assertSame($obj->fields()['xxx']['end'], 6);
-
     }
 
     public function testReadField()
     {
         $config = [
             'first_name' => [
-                'type' => 'string',
-                'start' => 3,
-                'length' => 10
-            ]
+                'type'   => 'string',
+                'start'  => 3,
+                'length' => 10,
+            ],
         ];
-        $obj = new FixedWidth($config);
+        $obj  = new FixedWidth($config);
         $line = '12345678901234567890';
         $this->assertSame('3456789012', $obj->readField($line, 'first_name'));
 
         // when a line is smaller than the upper bound everything should still work
         $config = [
             'first_name' => [
-                'type' => 'string',
-                'start' => 15,
-                'length' => 10
-            ]
+                'type'   => 'string',
+                'start'  => 15,
+                'length' => 10,
+            ],
         ];
-        $obj = new FixedWidth($config);
+        $obj  = new FixedWidth($config);
         $line = '12345678901234567890';
         $this->assertSame('567890', $obj->readField($line, 'first_name'));
         // check the newlines are discarded
@@ -198,43 +198,42 @@ class FixedWidthTest extends \PHPUnit_Framework_TestCase
     {
         $config = [
             'a' => [
-                'type' => 'string',
-                'start' => 3,
-                'length' => 10
+                'type'   => 'string',
+                'start'  => 3,
+                'length' => 10,
             ],
             // numeric indexes will not be printed
             [
-                'type' => 'string',
+                'type'  => 'string',
                 'start' => 13,
-                'end' => 13
+                'end'   => 13,
             ],
             'b' => [
-                'type' => 'string',
+                'type'  => 'string',
                 'start' => 14,
-                'end' => 17
-            ]
+                'end'   => 17,
+            ],
         ];
-        $obj = new FixedWidth($config);
+        $obj  = new FixedWidth($config);
         $line = '12345678901234567890';
         $this->assertSame([
             'a' => '3456789012',
             'b' => '4567',
         ], $obj->readLine($line));
 
-
         $config = [
             'a' => [
-                'type' => 'string',
+                'type'  => 'string',
                 'start' => 1,
-                'end' => 5
+                'end'   => 5,
             ],
             'b' => [
-                'type' => 'integer',
+                'type'  => 'integer',
                 'start' => 6,
-                'end' => 10
-            ]
+                'end'   => 10,
+            ],
         ];
-        $obj = new FixedWidth($config);
+        $obj  = new FixedWidth($config);
         $line = 'xxx  00004';
         $this->assertSame([
             'a' => 'xxx',
@@ -246,9 +245,9 @@ class FixedWidthTest extends \PHPUnit_Framework_TestCase
     {
         $config = [
             'a' => [
-                'type' => 'string',
-                'start' => 3,
-                'length' => 10
+                'type'   => 'string',
+                'start'  => 3,
+                'length' => 10,
             ],
         ];
         $obj = new FixedWidth($config);
@@ -262,12 +261,12 @@ class FixedWidthTest extends \PHPUnit_Framework_TestCase
     {
         $config = [
             'a' => [
-                'type' => 'string',
-                'start' => 3,
-                'length' => 10
+                'type'   => 'string',
+                'start'  => 3,
+                'length' => 10,
             ],
         ];
-        $obj = new FixedWidth($config);
+        $obj   = new FixedWidth($config);
         $value = $obj->readField('  xxx          ', 'a');
 
         // strings
@@ -278,10 +277,10 @@ class FixedWidthTest extends \PHPUnit_Framework_TestCase
     {
         $config = [
             'a' => [
-                'type' => 'integer',
+                'type'  => 'integer',
                 'start' => 11,
-                'end' => 17
-            ]
+                'end'   => 17,
+            ],
         ];
         $obj = new FixedWidth($config);
 
@@ -297,9 +296,9 @@ class FixedWidthTest extends \PHPUnit_Framework_TestCase
     {
         $config = [
             'a' => [
-                'type' => 'string',
-                'start' => 1,
-                'length' => 10
+                'type'   => 'string',
+                'start'  => 1,
+                'length' => 10,
             ],
         ];
         $obj = new FixedWidth($config);
@@ -312,32 +311,31 @@ class FixedWidthTest extends \PHPUnit_Framework_TestCase
     {
         $config = [
             'a' => [
-                'type' => 'integer',
-                'start' => 3,
-                'length' => 10
+                'type'   => 'integer',
+                'start'  => 3,
+                'length' => 10,
             ],
         ];
-        $obj = new FixedWidth($config);
+        $obj   = new FixedWidth($config);
         $value = $obj->readField('  0000000090     ', 'a');
 
         // strings
         $this->assertSame(90, $value);
     }
 
-
     public function testOverlap()
     {
         $config = [
             'a' => [
-                'type' => 'string',
+                'type'  => 'string',
                 'start' => 3,
-                'end' => 14
+                'end'   => 14,
             ],
             'b' => [
-                'type' => 'string',
+                'type'  => 'string',
                 'start' => 10,
-                'end' => 17
-            ]
+                'end'   => 17,
+            ],
         ];
         $this->setExpectedException(RuntimeException::class);
         $obj = new FixedWidth($config);
@@ -347,15 +345,15 @@ class FixedWidthTest extends \PHPUnit_Framework_TestCase
     {
         $config = [
             'a' => [
-                'type' => 'string',
+                'type'  => 'string',
                 'start' => 3,
-                'end' => 9
+                'end'   => 9,
             ],
             'b' => [
-                'type' => 'integer',
+                'type'  => 'integer',
                 'start' => 10,
-                'end' => 17
-            ]
+                'end'   => 17,
+            ],
         ];
 
         $obj = new FixedWidth($config);
@@ -369,15 +367,15 @@ class FixedWidthTest extends \PHPUnit_Framework_TestCase
     {
         $config = [
             'a' => [
-                'type' => 'string',
+                'type'  => 'string',
                 'start' => 3,
-                'end' => 9
+                'end'   => 9,
             ],
             'b' => [
-                'type' => 'integer',
-                'start' => 10,
-                'length' => 7
-            ]
+                'type'   => 'integer',
+                'start'  => 10,
+                'length' => 7,
+            ],
         ];
         $obj = new FixedWidth($config);
         $this->assertSame(16, $obj->getLength());
@@ -389,53 +387,53 @@ class FixedWidthTest extends \PHPUnit_Framework_TestCase
     {
         $config = [
             'a' => [
-                'type' => 'string',
+                'type'  => 'string',
                 'start' => 1,
-                'end' => 5
+                'end'   => 5,
             ],
             'b' => [
-                'type' => 'integer',
+                'type'  => 'integer',
                 'start' => 6,
-                'end' => 10
-            ]
+                'end'   => 10,
+            ],
         ];
         $data = ['a' => 'xxx', 'b' => 42];
-        $obj = new FixedWidth($config);
+        $obj  = new FixedWidth($config);
         $this->assertSame('xxx  00042', $obj->writeLine($data));
 
         $config = [
             'a' => [
-                'type' => 'string',
+                'type'  => 'string',
                 'start' => 6,
-                'end' => 10
+                'end'   => 10,
             ],
             'b' => [
-                'type' => 'integer',
+                'type'  => 'integer',
                 'start' => 1,
-                'end' => 5
-            ]
+                'end'   => 5,
+            ],
         ];
         $data = ['a' => 'xxx', 'b' => 42];
-        $obj = new FixedWidth($config);
+        $obj  = new FixedWidth($config);
         $this->assertSame('00042xxx  ', $obj->writeLine($data));
 
         $config = [
             'a' => [
-                'type' => 'string',
-                'start' => 1,
-                'end' => 6,
-                'padding' => '.',
-                'alignment' => 'right'
+                'type'      => 'string',
+                'start'     => 1,
+                'end'       => 6,
+                'padding'   => '.',
+                'alignment' => 'right',
             ],
             'b' => [
-                'type' => 'string',
-                'start' => 7,
-                'end' => 9,
-                'padding' => '.'
-            ]
+                'type'    => 'string',
+                'start'   => 7,
+                'end'     => 9,
+                'padding' => '.',
+            ],
         ];
         $data = ['a' => 'xxx', 'b' => ''];
-        $obj = new FixedWidth($config);
+        $obj  = new FixedWidth($config);
         $this->assertSame('...xxx...', $obj->writeLine($data));
     }
 
@@ -443,15 +441,15 @@ class FixedWidthTest extends \PHPUnit_Framework_TestCase
     {
         $config = [
             'a' => [
-                'type' => 'string',
+                'type'  => 'string',
                 'start' => 1,
-                'end' => 5
+                'end'   => 5,
             ],
             'b' => [
-                'type' => 'integer',
+                'type'  => 'integer',
                 'start' => 6,
-                'end' => 10
-            ]
+                'end'   => 10,
+            ],
         ];
         $obj = new FixedWidth($config);
         $this->assertSame('     00000', $obj->writeLine([]));
@@ -461,17 +459,17 @@ class FixedWidthTest extends \PHPUnit_Framework_TestCase
     {
         $config = [
             'a' => [
-                'type' => 'string',
-                'start' => 1,
-                'end' => 5,
-                'default' => 'empty'
+                'type'    => 'string',
+                'start'   => 1,
+                'end'     => 5,
+                'default' => 'empty',
             ],
             'b' => [
-                'type' => 'integer',
-                'start' => 6,
-                'end' => 10,
-                'default' => '42'
-            ]
+                'type'    => 'integer',
+                'start'   => 6,
+                'end'     => 10,
+                'default' => '42',
+            ],
         ];
         $obj = new FixedWidth($config);
         $this->assertSame('empty00042', $obj->writeLine([]));

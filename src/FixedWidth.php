@@ -10,15 +10,16 @@ class FixedWidth
 
     /**
      * Bases other than 1 are untested, unsupported, won't likely work.
+     *
      * @var int
      */
     protected $base = 1;
 
     /**
-     * The character we use to build the output line before filling it
+     * The character we use to build the output line before filling it.
+     *
      * @var string
      */
-
     protected $filler = ' ';
 
     protected $trimBeforeConvertingToText = true;
@@ -39,6 +40,7 @@ class FixedWidth
             $field['start'] - $this->base,
             $field['length']
         );
+
         return $this->textToValue($name, $value);
     }
 
@@ -46,16 +48,19 @@ class FixedWidth
     {
         $record = [];
         foreach ($this->fields as $field) {
-            if (is_numeric($field['name'])) continue;
+            if (is_numeric($field['name'])) {
+                continue;
+            }
             $record[$field['name']] = $this->readField($line, $field['name']);
         }
+
         return $record;
     }
 
     public function validate($data)
     {
         foreach ($data as $key => $value) {
-            $field = $this->fields[$key];
+            $field    = $this->fields[$key];
             $dataType = gettype($value);
             if ($dataType !== $field['type']) {
                 throw new InvalidDataException(
@@ -64,6 +69,7 @@ class FixedWidth
                 );
             }
         }
+
         return true;
     }
 
@@ -71,10 +77,11 @@ class FixedWidth
     {
         $defaults = [
             'alignment' => 'left',
-            'padding' => ' ',
-            'required' => false,
-            'default' => '',
+            'padding'   => ' ',
+            'required'  => false,
+            'default'   => '',
         ];
+
         return $field + $defaults;
     }
 
@@ -82,10 +89,11 @@ class FixedWidth
     {
         $defaults = [
             'alignment' => 'right',
-            'padding' => '0',
-            'required' => false,
-            'default' => 0,
+            'padding'   => '0',
+            'required'  => false,
+            'default'   => 0,
         ];
+
         return $field + $defaults;
     }
 
@@ -140,9 +148,9 @@ class FixedWidth
             }
             if (in_array($field['type'], $this->getAvailableTypes())) {
                 $field['name'] = $key;
-                $type = $field['type'];
-                $field = $this->normalizeLength($field);
-                $field = $this->$type($field);
+                $type          = $field['type'];
+                $field         = $this->normalizeLength($field);
+                $field         = $this->$type($field);
                 $this->checkField($field);
             } else {
                 throw new RuntimeException("Field $key type is invalid ({$field['type']}");
@@ -165,7 +173,9 @@ class FixedWidth
     protected function checkOverlap($field)
     {
         foreach ($this->fields as $other) {
-            if ($field['name'] === $other['name']) continue;
+            if ($field['name'] === $other['name']) {
+                continue;
+            }
 
             // http://stackoverflow.com/a/13387860/358813
             // e2 >= b1 and e1 >= b2
@@ -180,19 +190,20 @@ class FixedWidth
 
     protected function textToValue($name, $value)
     {
-        $field = $this->fields[$name];
+        $field        = $this->fields[$name];
         $trimFunction = $this->matchAlignment($field, 'rtrim', 'ltrim');
 
         $value = $trimFunction($value, $field['padding']);
 
         switch ($field['type']) {
             case 'string':
-                return (string)$value;
+                return (string) $value;
             case 'integer':
                 if (!filter_var($value, FILTER_VALIDATE_INT)) {
                     throw new RuntimeException("Field {$field['name']} cannot be cast as integer (value: '$value')");
                 }
-                return (int)$value;
+
+                return (int) $value;
         }
 
         return $value;
@@ -215,13 +226,13 @@ class FixedWidth
     public function valueToText($name, $value)
     {
         $field = $this->fields[$name];
-        $value = (string)$value;
+        $value = (string) $value;
         if ($this->trimBeforeConvertingToText) {
             $value = trim($value);
         }
 
         $alignment = $this->matchAlignment($field, STR_PAD_RIGHT, STR_PAD_LEFT);
-        $string = str_pad($value, $field['length'], $field['padding'], $alignment);
+        $string    = str_pad($value, $field['length'], $field['padding'], $alignment);
 
         if (strlen($string) > $field['length'] && in_array($field['type'], ['integer'])) {
             throw new RuntimeException("Field $name overflows (max length: {$field['length']} {$field['type']}");
@@ -235,7 +246,7 @@ class FixedWidth
     }
 
     /**
-     * Calculates the length of a row
+     * Calculates the length of a row.
      */
     public function getLength()
     {
@@ -243,6 +254,7 @@ class FixedWidth
         foreach ($this->fields as $field) {
             $length = max($length, $field['end']);
         }
+
         return $length;
     }
 
@@ -251,9 +263,9 @@ class FixedWidth
         $line = str_repeat($this->filler, $this->getLength());
 
         foreach ($this->fields as $field) {
-            $name = $field['name'];
+            $name  = $field['name'];
             $value = array_key_exists($name, $data) ? $data[$name] : $field['default'];
-            $line = substr_replace(
+            $line  = substr_replace(
                 $line,
                 $this->valueToText($name, $value),
                 $field['start'] - $this->base,

@@ -1,14 +1,8 @@
 <?php
 
 $finder = Symfony\Component\Finder\Finder::create()
-    ->in(__DIR__.'/app')
-    ->in(__DIR__.'/config')
+    ->in(__DIR__.'/src')
     ->in(__DIR__.'/tests')
-    ->in(__DIR__.'/lib')
-    ->in(__DIR__.'/database')
-    ->in(__DIR__.'/bootstrap')
-    ->notPath('bootstrap/cache')
-    ->notName('*.blade.php')
     ->name('*.php')
     ->ignoreDotFiles(true)
     ->ignoreVCS(true);
