@@ -3,7 +3,7 @@
   "description": "A library to parse and build fixed-width strings",
   "minimum-stability": "stable",
   "homepage": "http://www.axelero.it",
-  "license": "Proprietary",
+  "license": "MIT",
   "require": {
     "php": ">=5.5.9"
   },
