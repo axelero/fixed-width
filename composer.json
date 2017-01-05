@@ -1,0 +1,23 @@
+{
+  "name": "axelero/fixed-width",
+  "description": "A library to parse and build fixed-width strings",
+  "minimum-stability": "stable",
+  "homepage": "http://www.axelero.it",
+  "license": "Proprietary",
+  "require": {
+    "php": ">=5.5.9"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "4.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Axelero\\FixedWidth\\": "src"
+    },
+    "autoload-dev": {
+      "psr-4": {
+        "Axelero\\FixedWidth\\": "tests"
+      }
+    }
+  }
+}
