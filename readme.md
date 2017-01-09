@@ -74,7 +74,7 @@ The possible configuration values for each field are:
 - **type**: string|integer
 - **alignment**: left|right *(defaults to left for string, right for integers)*
 - **padding**: charachter to use to fill the missing space *(defaults to '' for string, '0' for integers)*
-- **default** => what to write when an array field is missing *(defaults to '' for string, '0' for integers)*
+- **default**: what to write when an array field is missing *(defaults to '' for string, '0' for integers)*
 
 ## Testing
 
