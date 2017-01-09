@@ -13,11 +13,11 @@
   "autoload": {
     "psr-4": {
       "Axelero\\FixedWidth\\": "src"
-    },
-    "autoload-dev": {
-      "psr-4": {
-        "Axelero\\FixedWidth\\": "tests"
-      }
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Axelero\\FixedWidth\\": "tests"
     }
   }
 }
