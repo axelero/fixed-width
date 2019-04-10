@@ -35,7 +35,7 @@ class FixedWidth
         $line = rtrim($line);
 
         $field = $this->fields[$name];
-        $value = substr(
+        $value = mb_substr(
             $line,
             $field['start'] - $this->base,
             $field['length']

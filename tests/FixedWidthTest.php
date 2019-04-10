@@ -239,6 +239,25 @@ class FixedWidthTest extends \PHPUnit_Framework_TestCase
             'a' => 'xxx',
             'b' => 4,
         ], $obj->readLine($line));
+
+        $config = [
+            'a' => [
+                'type'  => 'string',
+                'start' => 1,
+                'end'   => 5,
+            ],
+            'b' => [
+                'type'  => 'integer',
+                'start' => 6,
+                'end'   => 10,
+            ],
+        ];
+        $obj  = new FixedWidth($config);
+        $line = 'æøå  00004';
+        $this->assertSame([
+            'a' => 'æøå',
+            'b' => 4,
+        ], $obj->readLine($line));
     }
 
     public function testStringToText()
